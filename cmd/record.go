@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -60,8 +62,14 @@ var recordCmd = &cobra.Command{
 	Long:  "Get the 76ers record for the current season.",
 	Run: func(cmd *cobra.Command, args []string) {
 		year := cmd.Flag("year")
-		fmt.Printf("Fetching 76ers record for %s \n", year.Value.String())
-		response, err := http.Get(`https://www.balldontlie.io/api/v1/games/?seasons[]=2019,2020&postseason=False&team_ids[]=23&per_page=100`)
+		var url string
+		if year.Value.String() == "" {
+			currentYear := time.Now().Format("2006")
+			url = fmt.Sprintf("https://www.balldontlie.io/api/v1/games/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", currentYear, incrementString(currentYear))
+		} else {
+			url = fmt.Sprintf("https://www.balldontlie.io/api/v1/games/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", year.Value.String(), incrementString(year.Value.String()))
+		}
+		response, err := http.Get(url)
 		if err != nil {
 			fmt.Printf("The request failed with error %s\n", err)
 		} else {
@@ -105,4 +113,11 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// recordCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func incrementString(str string) string {
+	i, _ := strconv.Atoi(str)
+	i = i + 1
+	str = strconv.FormatInt(int64(i), 10)
+	return str
 }
