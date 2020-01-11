@@ -6,22 +6,18 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"time"
 )
 
 // nextCmd represents the next command
 var nextCmd = &cobra.Command{
 	Use:   "next",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Gets the next available sixers game date and time.",
+	Long:  "Gets the next available sixers game date and time.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("next called")
+		currentDate := time.Now()
+		fmt.Println(currentDate)
 	},
 }
 
