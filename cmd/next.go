@@ -6,6 +6,8 @@ package cmd
 
 import (
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -13,28 +15,21 @@ import (
 // nextCmd represents the next command
 var nextCmd = &cobra.Command{
 	Use:   "next",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Gets the next available sixers game date and time.",
+	Long:  "Gets the next available sixers game date and time.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("next called")
+		var url string
+		year := time.Now().Format("2006")
+		url = buildURL(decrementString(year), year)
+		response, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("The request failed with error %s\n", err)
+		} else {
+			fmt.Println(handleNextResponse(response))
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(nextCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// nextCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// nextCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
