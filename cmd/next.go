@@ -6,8 +6,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
+	"net/http"
 	"time"
+
+	"github.com/spf13/cobra"
 )
 
 // nextCmd represents the next command
@@ -16,21 +18,18 @@ var nextCmd = &cobra.Command{
 	Short: "Gets the next available sixers game date and time.",
 	Long:  "Gets the next available sixers game date and time.",
 	Run: func(cmd *cobra.Command, args []string) {
-		currentDate := time.Now()
-		fmt.Println(currentDate)
+		var url string
+		year := time.Now().Format("2006")
+		url = buildURL(decrementString(year), year)
+		response, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("The request failed with error %s\n", err)
+		} else {
+			fmt.Println(handleNextResponse(response))
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(nextCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// nextCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// nextCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
