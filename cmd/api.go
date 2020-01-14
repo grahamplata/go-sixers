@@ -7,12 +7,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/briandowns/spinner"
+	"github.com/grahamplata/sixers/schema"
 	"io/ioutil"
 	"net/http"
 	"time"
-
-	"github.com/briandowns/spinner"
-	"github.com/grahamplata/sixers/schema"
 )
 
 func buildURL(val1 string, val2 string) string {
@@ -20,7 +19,7 @@ func buildURL(val1 string, val2 string) string {
 	return url
 }
 
-func handleNextResponse(response *http.Response) string {
+func handleNextResponse(response *http.Response) bool {
 	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
 	gameFound := false
 	t := time.Now().Format("2006-01-02")
@@ -38,9 +37,9 @@ func handleNextResponse(response *http.Response) string {
 	spin.Stop()
 
 	if gameFound == true {
-		return fmt.Sprintf("10,9 8 76ers! Game tonight! %s", t)
+		return true
 	}
-	return fmt.Sprintf("Sorry, no game tonight.")
+	return false
 }
 
 // handleRecordResponse
@@ -50,7 +49,7 @@ func handleRecordResponse(response *http.Response) string {
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject schema.Response
 	json.Unmarshal(responseData, &responseObject)
-	var gameCount int = 1
+	var gameCount int = 0
 	var winRecord int = 0
 	for i := 0; i < len(responseObject.Data); i++ {
 		if responseObject.Data[i].VisitorTeamScore != 0 || responseObject.Data[i].HomeTeamScore != 0 {
@@ -70,5 +69,6 @@ func handleRecordResponse(response *http.Response) string {
 		}
 	}
 	spin.Stop()
-	return fmt.Sprintf("Wins: %d Losses: %d\n", winRecord, (gameCount - winRecord))
+	pct := (float64(winRecord)/float64(gameCount)*100)
+	return fmt.Sprintf("Wins: %d Losses: %d Winrate: %.1f\n", winRecord, (gameCount - winRecord), pct)
 }

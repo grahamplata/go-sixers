@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/briandowns/spinner v1.8.0
-	github.com/logrusorgru/aurora v0.0.0-20200102142835-e9ef32dff381 // indirect
+	github.com/logrusorgru/aurora v0.0.0-20200102142835-e9ef32dff381
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.11 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
