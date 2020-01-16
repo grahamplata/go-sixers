@@ -8,8 +8,6 @@ import (
 	"strconv"
 )
 
-const baseURL string = "https://www.balldontlie.io/api/v1/games"
-
 func incrementString(str string) string {
 	i, _ := strconv.Atoi(str)
 	i = i + 1

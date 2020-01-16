@@ -6,7 +6,6 @@ package cmd
 
 import (
 	"fmt"
-	. "github.com/logrusorgru/aurora"
 	"github.com/spf13/cobra"
 	"net/http"
 	"time"
@@ -26,11 +25,9 @@ var nextCmd = &cobra.Command{
 			fmt.Printf("The request failed with error %s\n", err)
 		} else {
 			response := handleNextResponse(response)
-			if response == true {
-				sixers := fmt.Sprintf("%d%ders", Red(7), Blue(6))
-				fmt.Printf("10,9 8 %s!\n", sixers)
+			if response != true {
+				fmt.Println("Sorry, no game tonight.")
 			}
-			fmt.Println("Sorry, no game tonight.")
 		}
 	},
 }
