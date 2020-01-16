@@ -7,12 +7,12 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/briandowns/spinner"
+	"github.com/grahamplata/sixers/schema"
+	. "github.com/logrusorgru/aurora"
 	"io/ioutil"
 	"net/http"
 	"time"
-
-	"github.com/briandowns/spinner"
-	"github.com/grahamplata/sixers/schema"
 )
 
 func buildURL(val1 string, val2 string) string {
@@ -20,7 +20,7 @@ func buildURL(val1 string, val2 string) string {
 	return url
 }
 
-func handleNextResponse(response *http.Response) string {
+func handleNextResponse(response *http.Response) bool {
 	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
 	gameFound := false
 	t := time.Now().Format("2006-01-02")
@@ -32,15 +32,22 @@ func handleNextResponse(response *http.Response) string {
 	for i := 0; i < len(responseObject.Data); i++ {
 		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
 		if responseObject.Data[i].Date == cleanTime {
+			sixers := fmt.Sprintf("%d%ders", Bold(Red(7)), Bold(Blue(6)))
+			fmt.Printf("10,9 8 %s!\nYou're in luck! There is a game today @ %s %s!\n", sixers, responseObject.Data[i].Status, responseObject.Data[i].Time)
 			gameFound = true
 		}
 	}
 	spin.Stop()
 
 	if gameFound == true {
-		return fmt.Sprintf("10,9 8 76ers! Game tonight! %s", t)
+		return true
 	}
-	return fmt.Sprintf("Sorry, no game tonight.")
+	return false
+}
+
+func handleGameDetails(val1 string) {
+	// https://www.balldontlie.io/api/v1/games/63188
+	// url := fmt.Sprintf("%s/%s", baseAPIURL, val1)
 }
 
 // handleRecordResponse
@@ -50,7 +57,7 @@ func handleRecordResponse(response *http.Response) string {
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject schema.Response
 	json.Unmarshal(responseData, &responseObject)
-	var gameCount int = 1
+	var gameCount int = 0
 	var winRecord int = 0
 	for i := 0; i < len(responseObject.Data); i++ {
 		if responseObject.Data[i].VisitorTeamScore != 0 || responseObject.Data[i].HomeTeamScore != 0 {
@@ -70,5 +77,6 @@ func handleRecordResponse(response *http.Response) string {
 		}
 	}
 	spin.Stop()
-	return fmt.Sprintf("Wins: %d Losses: %d\n", winRecord, (gameCount - winRecord))
+	pct := (float64(winRecord) / float64(gameCount))
+	return fmt.Sprintf("Wins: %d Losses: %d Winrate: %.3f\n", winRecord, (gameCount - winRecord), pct)
 }

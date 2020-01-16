@@ -15,8 +15,8 @@ import (
 // recordCmd represents the record command
 var recordCmd = &cobra.Command{
 	Use:   "record",
-	Short: "Get the 76ers record for the current season.",
-	Long:  "Get the 76ers record for the current season.",
+	Short: "Gets the 76ers record for the current season.",
+	Long:  "Gets the 76ers record for the current season.",
 	Run: func(cmd *cobra.Command, args []string) {
 		year := cmd.Flag("year")
 		var url string

@@ -6,10 +6,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"net/http"
 	"time"
-
-	"github.com/spf13/cobra"
 )
 
 // nextCmd represents the next command
@@ -25,7 +24,10 @@ var nextCmd = &cobra.Command{
 		if err != nil {
 			fmt.Printf("The request failed with error %s\n", err)
 		} else {
-			fmt.Println(handleNextResponse(response))
+			response := handleNextResponse(response)
+			if response != true {
+				fmt.Println("Sorry, no game tonight.")
+			}
 		}
 	},
 }
