@@ -8,7 +8,7 @@ Usage:
 Available Commands:
   help        Help about any command
   next        Gets the next available sixers game date and time.
-  record      Get the 76ers record for the current season.
+  record      Gets the 76ers record for the current season.
 
 Flags:
       --config string   config file (default is $HOME/.sixers.yaml)
