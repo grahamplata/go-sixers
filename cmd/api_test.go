@@ -37,7 +37,7 @@ func TestBuildURL(t *testing.T) {
 func TestHandleNextResponse(t *testing.T) {
 	dummy := schema.Response{
 		Data: []schema.Game{
-			schema.Game{
+			{
 				ID:               1,
 				Date:             "2018-10-16T00:00:00.000Z",
 				HomeTeamScore:    123,
@@ -88,7 +88,7 @@ func TestHandleNextResponse(t *testing.T) {
 func TestHandleRecordResponse(t *testing.T) {
 	dummy := schema.Response{
 		Data: []schema.Game{
-			schema.Game{
+			{
 				ID:               1,
 				Date:             "2018-10-16T00:00:00.000Z",
 				HomeTeamScore:    122,
