@@ -1,5 +1,8 @@
 [![Go Report Card](https://goreportcard.com/badge/grahamplata/sixers)](https://goreportcard.com/report/grahamplata/sixers)
+
 # Go 76ers
+
+## Current cli
 
 ```bash
 Usage:
@@ -16,4 +19,17 @@ Flags:
   -t, --toggle          Help message for toggle
 
 Use "sixers [command] --help" for more information about a command.
+```
+
+## Running tests
+
+```shell
+# Test
+go test -v ./cmd/...
+
+# Run All tests
+go test ./...
+
+# Coverage
+go test -cover ./...
 ```
