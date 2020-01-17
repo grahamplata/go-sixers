@@ -52,8 +52,8 @@ func handleRecordResponse(response *http.Response) string {
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject schema.Response
 	json.Unmarshal(responseData, &responseObject)
-	var gameCount int = 0
-	var winRecord int = 0
+	var gameCount int
+	var winRecord int
 	for i := 0; i < len(responseObject.Data); i++ {
 		if responseObject.Data[i].VisitorTeamScore != 0 || responseObject.Data[i].HomeTeamScore != 0 {
 			var visitorScore int = responseObject.Data[i].VisitorTeamScore
