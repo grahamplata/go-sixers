@@ -1,8 +1,9 @@
+package cmd
+
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 
 */
-package cmd
 
 import (
 	"encoding/json"
@@ -43,11 +44,6 @@ func handleNextResponse(response *http.Response) bool {
 		return true
 	}
 	return false
-}
-
-func handleGameDetails(val1 string) {
-	// https://www.balldontlie.io/api/v1/games/63188
-	// url := fmt.Sprintf("%s/%s", baseAPIURL, val1)
 }
 
 // handleRecordResponse
