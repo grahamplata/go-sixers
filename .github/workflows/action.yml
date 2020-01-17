@@ -1,5 +1,5 @@
 on: push
-name: testing
+name: Go Actions
 jobs:
   go-test:
     name: Go Test
