@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"github.com/briandowns/spinner"
 	"github.com/grahamplata/sixers/schema"
-	. "github.com/logrusorgru/aurora"
+	"github.com/logrusorgru/aurora"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -25,7 +25,6 @@ func handleNextResponse(response *http.Response) bool {
 	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
 	gameFound := false
 	t := time.Now().Format("2006-01-02")
-
 	spin.Start()
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject schema.Response
@@ -33,7 +32,7 @@ func handleNextResponse(response *http.Response) bool {
 	for i := 0; i < len(responseObject.Data); i++ {
 		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
 		if responseObject.Data[i].Date == cleanTime {
-			sixers := fmt.Sprintf("%d%ders", Bold(Red(7)), Bold(Blue(6)))
+			sixers := fmt.Sprintf("%d%ders", aurora.Bold(aurora.Red(7)), aurora.Bold(aurora.Blue(6)))
 			fmt.Printf("10,9 8 %s!\nYou're in luck! There is a game today @ %s %s!\n", sixers, responseObject.Data[i].Status, responseObject.Data[i].Time)
 			gameFound = true
 		}
