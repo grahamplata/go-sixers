@@ -31,7 +31,7 @@ var recordCmd = &cobra.Command{
 		if err != nil {
 			fmt.Printf("The request failed with error %s\n", err)
 		} else {
-			fmt.Printf(handleRecordResponse(response))
+			fmt.Println(handleRecordResponse(response))
 		}
 	},
 }
