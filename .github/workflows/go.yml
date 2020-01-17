@@ -1,2 +1,0 @@
-- name: Golang Pieline
-  uses: shoukoo/golang-pipeline@0.2.0
