@@ -1,9 +1,2 @@
-on: push
-name: build
-jobs:
-  go-pipeline:
-    name: Go Checks
-    runs-on: ubuntu-latest
-    steps:
-    - name: go1.12 test
-      uses: shoukoo/golang-pipeline/go1.12/test@master
+- name: Golang Pieline
+  uses: shoukoo/golang-pipeline@0.2.0
