@@ -1,8 +1,9 @@
+package cmd
+
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 
 */
-package cmd
 
 import (
 	"strconv"

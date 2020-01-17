@@ -1,8 +1,9 @@
+package cmd
+
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 
 */
-package cmd
 
 import (
 	"fmt"
@@ -30,7 +31,7 @@ var recordCmd = &cobra.Command{
 		if err != nil {
 			fmt.Printf("The request failed with error %s\n", err)
 		} else {
-			fmt.Printf(handleRecordResponse(response))
+			fmt.Println(handleRecordResponse(response))
 		}
 	},
 }
