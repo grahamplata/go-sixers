@@ -77,6 +77,6 @@ func handleRecordResponse(response *http.Response) string {
 	spin.Stop()
 	wins := fmt.Sprintf("%s %d", aurora.Green("Wins:"), winRecord)
 	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
-	pct := fmt.Sprintf("Win pct: %.3f", (float64(winRecord) / float64(gameCount)))
+	pct := fmt.Sprintf("%s %.3f", aurora.Yellow("Win pct:"), (float64(winRecord) / float64(gameCount)))
 	return fmt.Sprintf("%s\n%s\n%s", wins, losses, pct)
 }
