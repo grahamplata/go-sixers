@@ -15,6 +15,7 @@ import (
 
 	"github.com/briandowns/spinner"
 	"github.com/grahamplata/sixers/schema"
+	"github.com/logrusorgru/aurora"
 )
 
 func buildURL(val1 string, val2 string) string {
@@ -74,6 +75,8 @@ func handleRecordResponse(response *http.Response) string {
 		}
 	}
 	spin.Stop()
-	pct := (float64(winRecord) / float64(gameCount))
-	return fmt.Sprintf("Wins: %d Losses: %d Winrate: %.3f", winRecord, (gameCount - winRecord), pct)
+	wins := fmt.Sprintf("%s %d", aurora.Green("Wins:"), winRecord)
+	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
+	pct := fmt.Sprintf("Win pct: %.3f", (float64(winRecord) / float64(gameCount)))
+	return fmt.Sprintf("%s\n%s\n%s", wins, losses, pct)
 }
