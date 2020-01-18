@@ -8,12 +8,13 @@ Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/briandowns/spinner"
-	"github.com/grahamplata/sixers/schema"
-	"github.com/logrusorgru/aurora"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
+
+	"github.com/briandowns/spinner"
+	"github.com/grahamplata/sixers/schema"
 )
 
 func buildURL(val1 string, val2 string) string {
@@ -32,8 +33,9 @@ func handleNextResponse(response *http.Response) bool {
 	for i := 0; i < len(responseObject.Data); i++ {
 		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
 		if responseObject.Data[i].Date == cleanTime {
-			sixers := fmt.Sprintf("%d%ders", aurora.Bold(aurora.Red(7)), aurora.Bold(aurora.Blue(6)))
-			fmt.Printf("10,9 8 %s!\nYou're in luck! There is a game today @ %s %s!\n", sixers, responseObject.Data[i].Status, responseObject.Data[i].Time)
+			status := responseObject.Data[i].Status
+			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
+			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", sixers, status, gameTime)
 			gameFound = true
 		}
 	}
@@ -73,5 +75,5 @@ func handleRecordResponse(response *http.Response) string {
 	}
 	spin.Stop()
 	pct := (float64(winRecord) / float64(gameCount))
-	return fmt.Sprintf("Wins: %d Losses: %d Winrate: %.3f\n", winRecord, (gameCount - winRecord), pct)
+	return fmt.Sprintf("Wins: %d Losses: %d Winrate: %.3f", winRecord, (gameCount - winRecord), pct)
 }
