@@ -7,8 +7,9 @@ Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -19,13 +20,15 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sixers",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "A quick glimpse at the 76er's season.",
+	Long: `A cli tool to get past and future statistics about the 
+Philadelphia 76ers basketball team.
+	_____ __
+	|___  / /_   ___ _ __ ___
+	   / / '_ \ / _ \ '__/ __|
+	  / /| (_) |  __/ |  \__ \
+	 /_/  \___/ \___|_|  |___/
+	`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
