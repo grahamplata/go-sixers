@@ -1,4 +1,4 @@
-package cmd
+package api
 
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
@@ -14,29 +14,29 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"github.com/grahamplata/sixers/schema"
+	"github.com/grahamplata/sixers/config"
 	"github.com/logrusorgru/aurora"
 )
 
-func buildURL(val1 string, val2 string) string {
-	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", baseAPIURL, val1, val2)
+func BuildURL(val1 string, val2 string) string {
+	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", config.BaseAPIURL, val1, val2)
 	return url
 }
 
-func handleNextResponse(response *http.Response) bool {
+func NextResponse(response *http.Response) bool {
 	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
 	gameFound := false
 	t := time.Now().Format("2006-01-02")
 	spin.Start()
 	responseData, _ := ioutil.ReadAll(response.Body)
-	var responseObject schema.Response
+	var responseObject Response
 	json.Unmarshal(responseData, &responseObject)
 	for i := 0; i < len(responseObject.Data); i++ {
 		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
 		if responseObject.Data[i].Date == cleanTime {
 			status := responseObject.Data[i].Status
 			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
-			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", sixers, status, gameTime)
+			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.Sixers, status, gameTime)
 			gameFound = true
 		}
 	}
@@ -48,12 +48,12 @@ func handleNextResponse(response *http.Response) bool {
 	return false
 }
 
-// handleRecordResponse
-func handleRecordResponse(response *http.Response) string {
+// RecordResponse
+func RecordResponse(response *http.Response) string {
 	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
 	spin.Start()
 	responseData, _ := ioutil.ReadAll(response.Body)
-	var responseObject schema.Response
+	var responseObject Response
 	json.Unmarshal(responseData, &responseObject)
 	var gameCount int
 	var winRecord int

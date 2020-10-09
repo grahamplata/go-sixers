@@ -1,4 +1,4 @@
-package cmd
+package api
 
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
@@ -10,8 +10,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"testing"
-
-	"github.com/grahamplata/sixers/schema"
 )
 
 var urlTests = []struct {
@@ -27,16 +25,16 @@ var urlTests = []struct {
 
 func TestBuildURL(t *testing.T) {
 	for _, tt := range urlTests {
-		actual := buildURL(tt.n, tt.m)
+		actual := BuildURL(tt.n, tt.m)
 		if actual != tt.expected {
-			t.Errorf("buildURL(%s,%s): expected %s, actual %s", tt.n, tt.m, tt.expected, actual)
+			t.Errorf("BuildURL(%s,%s): expected %s, actual %s", tt.n, tt.m, tt.expected, actual)
 		}
 	}
 }
 
-func TestHandleNextResponse(t *testing.T) {
-	dummy := schema.Response{
-		Data: []schema.Game{
+func TestNextResponse(t *testing.T) {
+	dummy := Response{
+		Data: []Game{
 			{
 				ID:               1,
 				Date:             "2018-10-16T00:00:00.000Z",
@@ -47,7 +45,7 @@ func TestHandleNextResponse(t *testing.T) {
 				Status:           "Final",
 				Time:             " ",
 				PostSeason:       false,
-				HomeTeam: schema.Team{
+				HomeTeam: Team{
 					ID:           1,
 					Abbreviation: "BOS",
 					City:         "Boston",
@@ -56,7 +54,7 @@ func TestHandleNextResponse(t *testing.T) {
 					FullName:     "Boston Celtics",
 					Name:         "Celtics",
 				},
-				VisitorTeam: schema.Team{
+				VisitorTeam: Team{
 					ID:           23,
 					Abbreviation: "PHI",
 					City:         "Philadelphia",
@@ -79,15 +77,15 @@ func TestHandleNextResponse(t *testing.T) {
 		ContentLength: int64(len(body)),
 		Header:        make(http.Header, 0),
 	}
-	actual := handleNextResponse(q)
+	actual := NextResponse(q)
 	if actual != false {
-		t.Errorf("handleNextResponse(stub): expected false, actual %t", actual)
+		t.Errorf("NextResponse(stub): expected false, actual %t", actual)
 	}
 }
 
-func TestHandleRecordResponse(t *testing.T) {
-	dummy := schema.Response{
-		Data: []schema.Game{
+func TestRecordResponse(t *testing.T) {
+	dummy := Response{
+		Data: []Game{
 			{
 				ID:               1,
 				Date:             "2018-10-16T00:00:00.000Z",
@@ -98,7 +96,7 @@ func TestHandleRecordResponse(t *testing.T) {
 				Status:           "Final",
 				Time:             " ",
 				PostSeason:       false,
-				HomeTeam: schema.Team{
+				HomeTeam: Team{
 					ID:           1,
 					Abbreviation: "BOS",
 					City:         "Boston",
@@ -107,7 +105,7 @@ func TestHandleRecordResponse(t *testing.T) {
 					FullName:     "Boston Celtics",
 					Name:         "Celtics",
 				},
-				VisitorTeam: schema.Team{
+				VisitorTeam: Team{
 					ID:           23,
 					Abbreviation: "PHI",
 					City:         "Philadelphia",
@@ -130,8 +128,8 @@ func TestHandleRecordResponse(t *testing.T) {
 		ContentLength: int64(len(body)),
 		Header:        make(http.Header, 0),
 	}
-	actual := handleRecordResponse(q)
+	actual := RecordResponse(q)
 	if actual == "1" {
-		t.Errorf("handleNextResponse(stub): expected 1, actual %s", actual)
+		t.Errorf("NextResponse(stub): expected 1, actual %s", actual)
 	}
 }
