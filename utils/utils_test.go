@@ -1,9 +1,9 @@
-package cmd
+package utils
 
 /*
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
-
 */
+
 import "testing"
 
 var incrementTests = []struct {
@@ -18,7 +18,7 @@ var incrementTests = []struct {
 
 func TestIncrementString(t *testing.T) {
 	for _, tt := range incrementTests {
-		actual := incrementString(tt.n)
+		actual := IncrementString(tt.n)
 		if actual != tt.expected {
 			t.Errorf("incrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
 		}
@@ -37,7 +37,7 @@ var decrementTests = []struct {
 
 func TestDecrementString(t *testing.T) {
 	for _, tt := range decrementTests {
-		actual := decrementString(tt.n)
+		actual := DecrementString(tt.n)
 		if actual != tt.expected {
 			t.Errorf("decrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
 		}

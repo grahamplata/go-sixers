@@ -2,7 +2,7 @@
 Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 */
 
-package schema
+package api
 
 // A Response Struct to map response to.
 type Response struct {
