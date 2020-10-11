@@ -13,8 +13,8 @@ import (
 // nextCmd represents the next command
 var nextCmd = &cobra.Command{
 	Use:   "next",
-	Short: "Gets the next available sixers game date and time.",
-	Long:  "Gets the next available sixers game date and time.",
+	Short: "Fetches the next available sixers game date and time.",
+	Long:  "Fetches the next available sixers game date and time.",
 	Run: func(cmd *cobra.Command, args []string) {
 		handlers.Next(cmd, args)
 	},

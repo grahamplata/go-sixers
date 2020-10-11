@@ -20,7 +20,7 @@ func TestIncrementString(t *testing.T) {
 	for _, tt := range incrementTests {
 		actual := IncrementString(tt.n)
 		if actual != tt.expected {
-			t.Errorf("IncrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
+			t.Errorf("incrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
 		}
 	}
 }
@@ -39,7 +39,7 @@ func TestDecrementString(t *testing.T) {
 	for _, tt := range decrementTests {
 		actual := DecrementString(tt.n)
 		if actual != tt.expected {
-			t.Errorf("DecrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
+			t.Errorf("decrementString(%s): expected %s, actual %s", tt.n, tt.expected, actual)
 		}
 	}
 }

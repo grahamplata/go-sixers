@@ -19,7 +19,7 @@ import (
 )
 
 func BuildURL(val1 string, val2 string) string {
-	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", config.BaseAPIURL, val1, val2)
+	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", config.APIURL, val1, val2)
 	return url
 }
 
@@ -36,7 +36,7 @@ func NextResponse(response *http.Response) bool {
 		if responseObject.Data[i].Date == cleanTime {
 			status := responseObject.Data[i].Status
 			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
-			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.Sixers, status, gameTime)
+			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
 			gameFound = true
 		}
 	}
