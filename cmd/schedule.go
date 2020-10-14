@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/grahamplata/sixers/handlers"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +11,7 @@ var scheduleCmd = &cobra.Command{
 	Short: "An at a glance view of the Sixers NBA season.",
 	Long:  `An at a glance view of the Sixers NBA season.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("schedule called")
+		handlers.Schedule(cmd, args)
 	},
 }
 

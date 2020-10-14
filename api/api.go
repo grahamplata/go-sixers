@@ -10,8 +10,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 
+	"github.com/bndr/gotabulate"
 	"github.com/grahamplata/sixers/config"
 	"github.com/logrusorgru/aurora"
 )
@@ -66,4 +69,42 @@ func RecordResponse(response *http.Response) string {
 	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
 	pct := fmt.Sprintf("%s %.3f", aurora.Yellow("Win pct:"), (float64(winRecord) / float64(gameCount)))
 	return fmt.Sprintf("%s %s %s", wins, losses, pct)
+}
+
+// ScheduleResponse ...
+func ScheduleResponse(response *http.Response) string {
+	var headers = []string{"Game", "Date", "Home", "Away", "Winner"}
+	var responseObject Response
+	var table [][]string
+
+	responseData, _ := ioutil.ReadAll(response.Body)
+	json.Unmarshal(responseData, &responseObject)
+
+	for i, v := range responseObject.Data {
+		var winner string
+		parsedTime, _ := time.Parse(time.RFC3339, v.Date)
+		formattedTime := parsedTime.Format(config.LayoutUS)
+		gameNum := strconv.Itoa(i + 1)
+		home := fmt.Sprintf("%s: %v", v.HomeTeam.Abbreviation, v.HomeTeamScore)
+		away := fmt.Sprintf("%s: %v", v.VisitorTeam.Abbreviation, v.VisitorTeamScore)
+
+		if v.VisitorTeamScore != 0 || v.HomeTeamScore != 0 {
+			if v.HomeTeam.ID == config.TeamID {
+				if v.HomeTeamScore > v.VisitorTeamScore {
+					winner = v.HomeTeam.FullName
+				}
+			} else {
+				if v.HomeTeamScore < v.VisitorTeamScore {
+					winner = v.HomeTeam.FullName
+				}
+			}
+			winner = v.VisitorTeam.FullName
+		}
+
+		game := []string{gameNum, formattedTime, home, away, winner}
+		table = append(table, game)
+	}
+	tabulate := gotabulate.Create(table)
+	tabulate.SetHeaders(headers)
+	return tabulate.Render("simple")
 }
