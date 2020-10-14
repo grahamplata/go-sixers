@@ -1,10 +1,5 @@
 package cmd
 
-/*
-Copyright © 2019 Graham Plata <graham.plata@gmail.com>
-
-*/
-
 import (
 	"github.com/grahamplata/sixers/handlers"
 	"github.com/spf13/cobra"

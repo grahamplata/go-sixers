@@ -31,5 +31,8 @@ var SixersLogo string = fmt.Sprintf("%d%ders", aurora.Bold(aurora.Red(7)), auror
 // YearFormat year format
 const YearFormat = "2006"
 
-// DateFormat year format
-const DateFormat = "2006-01-02"
+// LayoutISO year format
+const LayoutISO = "2006-01-02"
+
+// LayoutUS year format
+const LayoutUS = "January 2, 2006"

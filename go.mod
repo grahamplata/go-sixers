@@ -3,6 +3,7 @@ module github.com/grahamplata/sixers
 go 1.13
 
 require (
+	github.com/bndr/gotabulate v1.1.2
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mitchellh/go-homedir v1.1.0

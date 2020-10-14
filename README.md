@@ -7,11 +7,11 @@
 ```bash
 A cli tool to get past and future statistics about the
 Philadelphia 76ers basketball team.
-	_____ __
-	|___  / /_   ___ _ __ ___
-	   / / '_ \ / _ \ '__/ __|
-	  / /| (_) |  __/ |  \__ \
-	 /_/  \___/ \___|_|  |___/
+        _____ __
+        |___  / /_   ___ _ __ ___
+           / / '_ \ / _ \ '__/ __|
+          / /| (_) |  __/ |  \__ \
+         /_/  \___/ \___|_|  |___/
 
 Usage:
   sixers [command]
@@ -20,6 +20,7 @@ Available Commands:
   help        Help about any command
   next        Fetches the next available sixers game date and time.
   record      Fetches the record for the current season.
+  schedule    An at a glance view of the Sixers NBA season.
 
 Flags:
       --config string   config file (default is $HOME/.sixers.yaml)
