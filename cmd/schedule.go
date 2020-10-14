@@ -1,7 +1,3 @@
-/*
-Copyright © 2020 Graham Plata <graham.plata@gmail.com>
-
-*/
 package cmd
 
 import (
@@ -13,13 +9,8 @@ import (
 // scheduleCmd represents the schedule command
 var scheduleCmd = &cobra.Command{
 	Use:   "schedule",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "An at a glance view of the Sixers NBA season.",
+	Long:  `An at a glance view of the Sixers NBA season.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("schedule called")
 	},
@@ -27,14 +18,4 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(scheduleCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// scheduleCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// scheduleCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
