@@ -70,7 +70,7 @@ var dummy = Response{
 	},
 }
 
-func TestNextResponse(t *testing.T) {
+func TestNextResponseNoGameTonight(t *testing.T) {
 	body, _ := json.Marshal(dummy)
 	q := &http.Response{
 		Status:        "200 OK",
@@ -88,7 +88,7 @@ func TestNextResponse(t *testing.T) {
 	}
 }
 
-func TestNextResponseFinal(t *testing.T) {
+func TestNextResponseGameTonight(t *testing.T) {
 	dummy.Data[0].Status = "8PM"
 	body, _ := json.Marshal(dummy)
 	q := &http.Response{
