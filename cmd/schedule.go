@@ -17,4 +17,6 @@ var scheduleCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(scheduleCmd)
+	// Here you will define your flags and configuration settings.
+	scheduleCmd.Flags().StringP("year", "y", "", "The year of the season you would like to query")
 }
