@@ -32,40 +32,41 @@ func TestBuildURL(t *testing.T) {
 	}
 }
 
-func TestNextResponse(t *testing.T) {
-	dummy := Response{
-		Data: []Game{
-			{
-				ID:               1,
-				Date:             "2018-10-16T00:00:00.000Z",
-				HomeTeamScore:    123,
-				VisitorTeamScore: 122,
-				Season:           2020,
-				Period:           1,
-				Status:           "Final",
-				Time:             " ",
-				PostSeason:       false,
-				HomeTeam: Team{
-					ID:           1,
-					Abbreviation: "BOS",
-					City:         "Boston",
-					Conference:   "East",
-					Division:     "Atlantic",
-					FullName:     "Boston Celtics",
-					Name:         "Celtics",
-				},
-				VisitorTeam: Team{
-					ID:           23,
-					Abbreviation: "PHI",
-					City:         "Philadelphia",
-					Conference:   "East",
-					Division:     "Atlantic",
-					FullName:     "Philadelphia 76ers",
-					Name:         "76ers",
-				},
+var dummy = Response{
+	Data: []Game{
+		{
+			ID:               1,
+			Date:             "2018-10-16T00:00:00.000Z",
+			HomeTeamScore:    123,
+			VisitorTeamScore: 122,
+			Season:           2020,
+			Period:           1,
+			Status:           "Final",
+			Time:             " ",
+			PostSeason:       false,
+			HomeTeam: Team{
+				ID:           1,
+				Abbreviation: "BOS",
+				City:         "Boston",
+				Conference:   "East",
+				Division:     "Atlantic",
+				FullName:     "Boston Celtics",
+				Name:         "Celtics",
+			},
+			VisitorTeam: Team{
+				ID:           23,
+				Abbreviation: "PHI",
+				City:         "Philadelphia",
+				Conference:   "East",
+				Division:     "Atlantic",
+				FullName:     "Philadelphia 76ers",
+				Name:         "76ers",
 			},
 		},
-	}
+	},
+}
+
+func TestNextResponse(t *testing.T) {
 	body, _ := json.Marshal(dummy)
 	q := &http.Response{
 		Status:        "200 OK",
@@ -78,45 +79,12 @@ func TestNextResponse(t *testing.T) {
 		Header:        make(http.Header, 0),
 	}
 	actual := NextResponse(q)
-	if actual != false {
-		t.Errorf("NextResponse(stub): expected false, actual %t", actual)
+	if actual != "Sorry, there are not any available games." {
+		t.Errorf("NextResponse(stub): expected false, actual %s", actual)
 	}
 }
 
 func TestRecordResponse(t *testing.T) {
-	dummy := Response{
-		Data: []Game{
-			{
-				ID:               1,
-				Date:             "2018-10-16T00:00:00.000Z",
-				HomeTeamScore:    122,
-				VisitorTeamScore: 123,
-				Season:           2020,
-				Period:           1,
-				Status:           "Final",
-				Time:             " ",
-				PostSeason:       false,
-				HomeTeam: Team{
-					ID:           1,
-					Abbreviation: "BOS",
-					City:         "Boston",
-					Conference:   "East",
-					Division:     "Atlantic",
-					FullName:     "Boston Celtics",
-					Name:         "Celtics",
-				},
-				VisitorTeam: Team{
-					ID:           23,
-					Abbreviation: "PHI",
-					City:         "Philadelphia",
-					Conference:   "East",
-					Division:     "Atlantic",
-					FullName:     "Philadelphia 76ers",
-					Name:         "76ers",
-				},
-			},
-		},
-	}
 	body, _ := json.Marshal(dummy)
 	q := &http.Response{
 		Status:        "200 OK",

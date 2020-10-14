@@ -22,6 +22,7 @@ func Next(cmd *cobra.Command, args []string) {
 	if err != nil {
 		fmt.Printf("The request failed with an error. %s\n", err)
 	} else {
-		api.NextResponse(response)
+		resp := api.NextResponse(response)
+		fmt.Println(resp)
 	}
 }

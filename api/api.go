@@ -25,7 +25,7 @@ func BuildURL(seasonYearStart string, seasonYearEnd string) string {
 }
 
 // NextResponse ...
-func NextResponse(response *http.Response) {
+func NextResponse(response *http.Response) string {
 	var responseObject Response
 
 	responseData, _ := ioutil.ReadAll(response.Body)
@@ -36,13 +36,11 @@ func NextResponse(response *http.Response) {
 		if responseObject.Data[i].Status != "Final" {
 			status := responseObject.Data[i].Status
 			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
-			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
-			break
+			resp := fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
+			return resp
 		}
 	}
-	fmt.Println("Sorry, there are not any available games.")
-	return
-
+	return "Sorry, there are not any available games."
 }
 
 // RecordResponse ...
