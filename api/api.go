@@ -11,72 +11,59 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/grahamplata/sixers/config"
 	"github.com/logrusorgru/aurora"
 )
 
-func BuildURL(val1 string, val2 string) string {
-	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", config.APIURL, val1, val2)
+// BuildURL takes the query parameters and returns a string to be used to retrieve data from the api
+func BuildURL(seasonYearStart string, seasonYearEnd string) string {
+	// TODO currently paging is hard coded address this later
+	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=%v&per_page=100", config.APIURL, seasonYearStart, seasonYearEnd, config.TeamID)
 	return url
 }
 
-func NextResponse(response *http.Response) bool {
-	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
-	gameFound := false
-	t := time.Now().Format("2006-01-02")
-	spin.Start()
-	responseData, _ := ioutil.ReadAll(response.Body)
+// NextResponse ...
+func NextResponse(response *http.Response) string {
 	var responseObject Response
+
+	responseData, _ := ioutil.ReadAll(response.Body)
 	json.Unmarshal(responseData, &responseObject)
-	for i := 0; i < len(responseObject.Data); i++ {
-		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
-		if responseObject.Data[i].Date == cleanTime {
-			status := responseObject.Data[i].Status
-			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
-			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
-			gameFound = true
+
+	for _, v := range responseObject.Data {
+		if v.Status != "Final" {
+			gameTime := strings.TrimRight(v.Time, " ")
+			resp := fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, v.Status, gameTime)
+			return resp
 		}
 	}
-	spin.Stop()
-
-	if gameFound == true {
-		return true
-	}
-	return false
+	return "Sorry, there are not any available games."
 }
 
-// RecordResponse
+// RecordResponse ...
 func RecordResponse(response *http.Response) string {
-	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
-	spin.Start()
-	responseData, _ := ioutil.ReadAll(response.Body)
+	var gameCount, winRecord int
 	var responseObject Response
+
+	responseData, _ := ioutil.ReadAll(response.Body)
 	json.Unmarshal(responseData, &responseObject)
-	var gameCount int
-	var winRecord int
-	for i := 0; i < len(responseObject.Data); i++ {
-		if responseObject.Data[i].VisitorTeamScore != 0 || responseObject.Data[i].HomeTeamScore != 0 {
-			var visitorScore int = responseObject.Data[i].VisitorTeamScore
-			var homeScore int = responseObject.Data[i].HomeTeamScore
-			var homeID int = responseObject.Data[i].HomeTeam.ID
-			if homeID == 23 {
-				if homeScore > visitorScore {
+
+	for _, v := range responseObject.Data {
+		if v.VisitorTeamScore != 0 || v.HomeTeamScore != 0 {
+			if v.HomeTeam.ID == config.TeamID {
+				if v.HomeTeamScore > v.VisitorTeamScore {
 					winRecord++
 				}
 			} else {
-				if homeScore < visitorScore {
+				if v.HomeTeamScore < v.VisitorTeamScore {
 					winRecord++
 				}
 			}
 			gameCount++
 		}
 	}
-	spin.Stop()
 	wins := fmt.Sprintf("%s %d", aurora.Green("Wins:"), winRecord)
 	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
 	pct := fmt.Sprintf("%s %.3f", aurora.Yellow("Win pct:"), (float64(winRecord) / float64(gameCount)))
-	return fmt.Sprintf("%s\n%s\n%s", wins, losses, pct)
+	return fmt.Sprintf("%s %s %s", wins, losses, pct)
 }
