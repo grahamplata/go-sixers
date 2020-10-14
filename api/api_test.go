@@ -7,9 +7,13 @@ Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"testing"
+
+	"github.com/grahamplata/sixers/config"
 )
 
 var urlTests = []struct {
@@ -80,6 +84,26 @@ func TestNextResponse(t *testing.T) {
 	}
 	actual := NextResponse(q)
 	if actual != "Sorry, there are not any available games." {
+		t.Errorf("NextResponse(stub): expected false, actual %s", actual)
+	}
+}
+
+func TestNextResponseFinal(t *testing.T) {
+	dummy.Data[0].Status = "8PM"
+	body, _ := json.Marshal(dummy)
+	q := &http.Response{
+		Status:        "200 OK",
+		StatusCode:    200,
+		Proto:         "HTTP/1.1",
+		ProtoMajor:    1,
+		ProtoMinor:    1,
+		Body:          ioutil.NopCloser(bytes.NewReader(body)),
+		ContentLength: int64(len(body)),
+		Header:        make(http.Header, 0),
+	}
+	actual := NextResponse(q)
+	gameTime := strings.TrimRight(dummy.Data[0].Time, " ")
+	if actual != fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, dummy.Data[0].Status, gameTime) {
 		t.Errorf("NextResponse(stub): expected false, actual %s", actual)
 	}
 }
