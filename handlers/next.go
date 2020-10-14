@@ -6,22 +6,22 @@ import (
 	"time"
 
 	"github.com/grahamplata/sixers/api"
+	"github.com/grahamplata/sixers/config"
 	"github.com/grahamplata/sixers/utils"
 	"github.com/spf13/cobra"
 )
 
-// Next handles the
+// Next handles when the next sixers game is available
 func Next(cmd *cobra.Command, args []string) {
-	var url string
-	year := time.Now().Format("2006")
-	url = api.BuildURL(utils.DecrementString(year), year)
+	// Create the parameters
+	year := time.Now().Format(config.YearFormat)
+	url := api.BuildURL(utils.DecrementString(year), year)
+
+	// Do get request and handle the response
 	response, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("The request failed with error %s\n", err)
+		fmt.Printf("The request failed with an error. %s\n", err)
 	} else {
-		response := api.NextResponse(response)
-		if response != true {
-			fmt.Println("Sorry, no game tonight.")
-		}
+		api.NextResponse(response)
 	}
 }

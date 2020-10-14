@@ -11,46 +11,43 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/briandowns/spinner"
 	"github.com/grahamplata/sixers/config"
 	"github.com/logrusorgru/aurora"
 )
 
-func BuildURL(val1 string, val2 string) string {
-	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=23&per_page=100", config.APIURL, val1, val2)
+// BuildURL takes the query parameters and returns a string to be used to retrieve data from the api
+func BuildURL(seasonYearStart string, seasonYearEnd string) string {
+	// TODO currently paging is hard coded address this later
+	url := fmt.Sprintf("%s/?seasons[]=%s,%s&postseason=False&team_ids[]=%v&per_page=100", config.APIURL, seasonYearStart, seasonYearEnd, config.TeamID)
 	return url
 }
 
-func NextResponse(response *http.Response) bool {
-	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
-	gameFound := false
-	t := time.Now().Format("2006-01-02")
-	spin.Start()
-	responseData, _ := ioutil.ReadAll(response.Body)
+// NextResponse ...
+func NextResponse(response *http.Response) {
 	var responseObject Response
+
+	responseData, _ := ioutil.ReadAll(response.Body)
 	json.Unmarshal(responseData, &responseObject)
+
 	for i := 0; i < len(responseObject.Data); i++ {
-		cleanTime := fmt.Sprintf("%sT00:00:00.000Z", t)
-		if responseObject.Data[i].Date == cleanTime {
+		// dirty way to handle the way the api flattens the time
+		if responseObject.Data[i].Status != "Final" {
 			status := responseObject.Data[i].Status
 			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
 			fmt.Printf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
-			gameFound = true
+			break
 		}
 	}
-	spin.Stop()
+	fmt.Println("Sorry, there are not any available games.")
+	return
 
-	if gameFound == true {
-		return true
-	}
-	return false
 }
 
-// RecordResponse
+// RecordResponse ...
 func RecordResponse(response *http.Response) string {
-	spin := spinner.New(spinner.CharSets[21], 100*time.Millisecond)
+	spin := spinner.New(config.SpinnerType, config.SpinnerDuration)
 	spin.Start()
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject Response
