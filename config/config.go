@@ -2,9 +2,7 @@ package config
 
 import (
 	"fmt"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/logrusorgru/aurora"
 )
 
@@ -35,15 +33,3 @@ const YearFormat = "2006"
 
 // DateFormat year format
 const DateFormat = "2006-01-02"
-
-// Spinner Configuration
-////////////////////////////////////////////////////////////
-// using #21
-// ⠁⠁⠉⠙⠚⠒⠂⠂⠒⠲⠴⠤⠄⠄⠤⠠⠠⠤⠦⠖⠒⠐⠐⠒⠓⠋⠉⠈⠈ spinner pattern
-// from https://github.com/briandowns/spinner
-
-// SpinnerType ...
-var SpinnerType []string = spinner.CharSets[21]
-
-// SpinnerDuration ...
-var SpinnerDuration time.Duration = 100 * time.Millisecond

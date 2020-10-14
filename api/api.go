@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/briandowns/spinner"
 	"github.com/grahamplata/sixers/config"
 	"github.com/logrusorgru/aurora"
 )
@@ -45,8 +44,6 @@ func NextResponse(response *http.Response) string {
 
 // RecordResponse ...
 func RecordResponse(response *http.Response) string {
-	spin := spinner.New(config.SpinnerType, config.SpinnerDuration)
-	spin.Start()
 	responseData, _ := ioutil.ReadAll(response.Body)
 	var responseObject Response
 	json.Unmarshal(responseData, &responseObject)
@@ -69,9 +66,8 @@ func RecordResponse(response *http.Response) string {
 			gameCount++
 		}
 	}
-	spin.Stop()
 	wins := fmt.Sprintf("%s %d", aurora.Green("Wins:"), winRecord)
 	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
 	pct := fmt.Sprintf("%s %.3f", aurora.Yellow("Win pct:"), (float64(winRecord) / float64(gameCount)))
-	return fmt.Sprintf("%s\n%s\n%s", wins, losses, pct)
+	return fmt.Sprintf("%s %s %s", wins, losses, pct)
 }
