@@ -30,12 +30,10 @@ func NextResponse(response *http.Response) string {
 	responseData, _ := ioutil.ReadAll(response.Body)
 	json.Unmarshal(responseData, &responseObject)
 
-	for i := 0; i < len(responseObject.Data); i++ {
-		// dirty way to handle the way the api flattens the time
-		if responseObject.Data[i].Status != "Final" {
-			status := responseObject.Data[i].Status
-			gameTime := strings.TrimRight(responseObject.Data[i].Time, " ")
-			resp := fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, status, gameTime)
+	for _, v := range responseObject.Data {
+		if v.Status != "Final" {
+			gameTime := strings.TrimRight(v.Time, " ")
+			resp := fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, v.Status, gameTime)
 			return resp
 		}
 	}
@@ -44,22 +42,20 @@ func NextResponse(response *http.Response) string {
 
 // RecordResponse ...
 func RecordResponse(response *http.Response) string {
-	responseData, _ := ioutil.ReadAll(response.Body)
+	var gameCount, winRecord int
 	var responseObject Response
+
+	responseData, _ := ioutil.ReadAll(response.Body)
 	json.Unmarshal(responseData, &responseObject)
-	var gameCount int
-	var winRecord int
-	for i := 0; i < len(responseObject.Data); i++ {
-		if responseObject.Data[i].VisitorTeamScore != 0 || responseObject.Data[i].HomeTeamScore != 0 {
-			var visitorScore int = responseObject.Data[i].VisitorTeamScore
-			var homeScore int = responseObject.Data[i].HomeTeamScore
-			var homeID int = responseObject.Data[i].HomeTeam.ID
-			if homeID == 23 {
-				if homeScore > visitorScore {
+
+	for _, v := range responseObject.Data {
+		if v.VisitorTeamScore != 0 || v.HomeTeamScore != 0 {
+			if v.HomeTeam.ID == config.TeamID {
+				if v.HomeTeamScore > v.VisitorTeamScore {
 					winRecord++
 				}
 			} else {
-				if homeScore < visitorScore {
+				if v.HomeTeamScore < v.VisitorTeamScore {
 					winRecord++
 				}
 			}
