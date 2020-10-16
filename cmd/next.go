@@ -11,7 +11,7 @@ var nextCmd = &cobra.Command{
 	Short: "Fetches the next available sixers game date and time.",
 	Long:  "Fetches the next available sixers game date and time.",
 	Run: func(cmd *cobra.Command, args []string) {
-		handlers.Next(cmd, args)
+		handlers.Next()
 	},
 }
 
