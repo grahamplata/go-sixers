@@ -4,6 +4,11 @@ Copyright © 2019 Graham Plata <graham.plata@gmail.com>
 
 package api
 
+// A Request Struct to map request parameters to.
+type Request struct {
+	Year string
+}
+
 // A Response Struct to map response to.
 type Response struct {
 	Data []Game `json:"data"`

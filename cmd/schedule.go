@@ -11,7 +11,7 @@ var scheduleCmd = &cobra.Command{
 	Short: "An at a glance view of the Sixers NBA season.",
 	Long:  `An at a glance view of the Sixers NBA season.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		handlers.Schedule(cmd, args)
+		handlers.Schedule(cmd)
 	},
 }
 
