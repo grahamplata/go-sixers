@@ -20,8 +20,9 @@ func Next() {
 	for _, v := range results.Data {
 		if v.Status != "Final" {
 			gameTime := strings.TrimRight(v.Time, " ")
-			nextResponse := fmt.Sprintf("10,9 8 %s! There is a game currently @ %s %+s\n", config.SixersLogo, v.Status, gameTime)
+			nextResponse := fmt.Sprintf("10,9 8 %s! There is a game @ %s %+s", config.SixersLogo, v.Status, gameTime)
 			fmt.Println(nextResponse)
+			break
 		}
 	}
 }
@@ -36,7 +37,6 @@ func Record(cmd *cobra.Command) {
 	if yearFlag.Value.String() == "" {
 		requestParams.Year = time.Now().Format(config.YearFormat)
 	} else {
-		// TODO add format check
 		requestParams.Year = yearFlag.Value.String()
 	}
 
@@ -61,7 +61,6 @@ func Record(cmd *cobra.Command) {
 	losses := fmt.Sprintf("%s %d", aurora.Red("Losses:"), (gameCount - winRecord))
 	pct := fmt.Sprintf("%s %.3f", aurora.Yellow("Win pct:"), (float64(winRecord) / float64(gameCount)))
 	final := fmt.Sprintf("%s %s %s", wins, losses, pct)
-
 	fmt.Println(final)
 }
 
@@ -76,7 +75,6 @@ func Schedule(cmd *cobra.Command) {
 	if yearFlag.Value.String() == "" {
 		requestParams.Year = time.Now().Format(config.YearFormat)
 	} else {
-		// TODO add format check
 		requestParams.Year = yearFlag.Value.String()
 	}
 
@@ -92,16 +90,10 @@ func Schedule(cmd *cobra.Command) {
 		away := fmt.Sprintf("%s: %v", v.VisitorTeam.Abbreviation, v.VisitorTeamScore)
 
 		if v.VisitorTeamScore != 0 || v.HomeTeamScore != 0 {
-			if v.HomeTeam.ID == config.TeamID {
-				if v.HomeTeamScore > v.VisitorTeamScore {
-					winner = v.HomeTeam.FullName
-				}
-			} else {
-				if v.HomeTeamScore < v.VisitorTeamScore {
-					winner = v.HomeTeam.FullName
-				}
-			}
 			winner = v.VisitorTeam.FullName
+			if v.HomeTeamScore > v.VisitorTeamScore {
+				winner = v.HomeTeam.FullName
+			}
 		}
 
 		game := []string{gameNum, formattedTime, home, away, winner}
