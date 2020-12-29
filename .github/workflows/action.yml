@@ -7,7 +7,5 @@ jobs:
     steps:
       - name: setup
         uses: actions/checkout@master
-      - name: linter
-        uses: shoukoo/golang-pipeline/go1.13/linter@master
       - name: tests
         uses: shoukoo/golang-pipeline/go1.13/test@master
